@@ -1,5 +1,7 @@
-import { FC } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import { FC, useMemo } from "react";
+import { Box, Typography } from "@mui/material";
+import { useCalendarStore } from "../store/useCalendarStore";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DateCalendar,
@@ -7,42 +9,45 @@ import {
   PickersDay,
   PickersDayProps,
 } from "@mui/x-date-pickers";
-import { Box, Typography } from "@mui/material";
-import { useCalendarStore } from "../store/calendar";
 
 export const Calendar: FC = () => {
-  const { date, selectDate } = useCalendarStore();
+  const { selectedDate, selectDate } = useCalendarStore();
 
   return (
-    <Box display="flex">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Box display="grid">
+      <Typography variant="h3" fontSize="2rem">
+        {selectedDate?.format("DD. MMMM, YYYY")}
+      </Typography>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="rs">
         <DateCalendar
-          onChange={selectDate}
+          value={selectedDate}
+          onChange={(value) => selectDate(value)}
           defaultValue={dayjs()}
           slots={{ day: ServerDay }}
-          slotProps={{
-            day: {
-              highlightedDays: null,
-            },
-          }}
         />
       </LocalizationProvider>
-      <Typography variant="h3">{date.format("DD MMM, YYYY")}</Typography>
     </Box>
   );
 };
 
-function ServerDay(
-  props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
-) {
-  const { day, outsideCurrentMonth, ...other } = props;
+function ServerDay(props: PickersDayProps) {
+  const { history, selectedActivity } = useCalendarStore();
+  const { day, ...other } = props;
+
+  const isHighlighted = useMemo(() => {
+    const historyItem = history.find((item) => day.isSame(item.date, "day"));
+    if (!historyItem) return false;
+    const activity = historyItem.completedActivities.find(
+      (item) => item.name === selectedActivity.name
+    );
+    return !!activity;
+  }, [day, history, selectedActivity.name]);
 
   return (
     <PickersDay
       {...other}
-      outsideCurrentMonth={outsideCurrentMonth}
+      sx={{ background: isHighlighted ? selectedActivity.color : undefined }}
       day={day}
-      sx={{ ...other.sx }}
     />
   );
 }
