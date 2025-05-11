@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "korak-po-korak",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
