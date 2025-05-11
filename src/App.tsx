@@ -7,7 +7,7 @@ import { ActivityFilter } from "./components/ActivityFilter";
 
 function App() {
   return (
-    <Box display="grid">
+    <Box display="grid" mb={4}>
       <Header />
       <Box
         display="flex"

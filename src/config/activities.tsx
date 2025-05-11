@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { LuCandy } from "react-icons/lu";
 import { FaBurger } from "react-icons/fa6";
 import { FaWalking } from "react-icons/fa";
 import { RiDrinks2Fill } from "react-icons/ri";
@@ -15,6 +16,11 @@ export const activities: Activity[] = [
     name: "Bez brze hrane",
     color: "orange",
     icon: <FaBurger color="orange" />,
+  },
+  {
+    name: "Bez slatkiša",
+    color: "blueviolet",
+    icon: <LuCandy color="blueviolet" />,
   },
   {
     name: "Bez sokova",

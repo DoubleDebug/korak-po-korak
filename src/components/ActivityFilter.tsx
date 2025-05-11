@@ -7,7 +7,14 @@ export const ActivityFilter: FC = () => {
   const { selectedActivity, selectActivity } = useCalendarStore();
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        rowGap: 2,
+      }}
+    >
       {activities.map((activity) => (
         <Chip
           sx={{

@@ -16,9 +16,10 @@ type CalendarStore = {
   selectActivity: (newActivity: Activity) => void;
   history: {
     date: string;
-    completedActivities: ActivityRecord[];
+    activities: ActivityRecord[];
   }[];
   updateActivity: (date: Dayjs, record: ActivityRecord) => void;
+  removeActivity: (date: Dayjs, activityName: string) => void;
 };
 
 export const useCalendarStore = create<CalendarStore>()(
@@ -29,6 +30,19 @@ export const useCalendarStore = create<CalendarStore>()(
       selectedActivity: activities[0],
       selectActivity: (newActivity) => set({ selectedActivity: newActivity }),
       history: [],
+      removeActivity: (date, activityName) =>
+        set((state) => ({
+          history: state.history.map((item) =>
+            date.isSame(item.date, "day")
+              ? {
+                  ...item,
+                  activities: item.activities.filter(
+                    (a) => a.name !== activityName
+                  ),
+                }
+              : item
+          ),
+        })),
       updateActivity: (date, record) =>
         set((state) => {
           const existingRecord = state.history.find((item) =>
@@ -40,8 +54,8 @@ export const useCalendarStore = create<CalendarStore>()(
                 date.isSame(item.date, "day")
                   ? {
                       ...item,
-                      completedActivities: Array.from(
-                        new Set([...item.completedActivities, record])
+                      activities: Array.from(
+                        new Set([...item.activities, record])
                       ),
                     }
                   : item
@@ -51,7 +65,7 @@ export const useCalendarStore = create<CalendarStore>()(
           return {
             history: [
               ...state.history,
-              { date: date.toISOString(), completedActivities: [record] },
+              { date: date.toISOString(), activities: [record] },
             ],
           };
         }),
