@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import "dayjs/locale/sr";
+dayjs.locale("sr");
 import { FC, useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { activities } from "../config/activities";
@@ -18,9 +20,9 @@ export const Calendar: FC = () => {
   return (
     <Box display="grid">
       <Typography variant="h3" fontSize="2rem">
-        {selectedDate?.format("DD. MMMM, YYYY")}
+        {selectedDate?.locale("sr").format("DD. MMMM, YYYY")}
       </Typography>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="rs">
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="sr">
         <DateCalendar
           value={selectedDate}
           onChange={(value) => selectDate(value)}

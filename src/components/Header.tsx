@@ -2,8 +2,9 @@ import { FC } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { Box, Typography } from "@mui/material";
 import { activities } from "../config/activities";
-import { FaRegCalendarCheck } from "react-icons/fa";
+import { PiSneakerMove } from "react-icons/pi";
 import { useCalendarStore } from "../store/useCalendarStore";
+import { IoClose } from "react-icons/io5";
 
 export const Header: FC = () => {
   const { selectedDate, history } = useCalendarStore();
@@ -22,9 +23,9 @@ export const Header: FC = () => {
       mb={4}
     >
       <Box display="flex" alignItems="center" gap={1}>
-        <FaRegCalendarCheck fontSize="1.5rem" />
-        <Typography variant="h1" fontSize="1.5rem" textAlign="start">
-          Statistika
+        <PiSneakerMove color="tomato" fontSize="1.5rem" />
+        <Typography variant="h1" fontSize="1.25rem" textAlign="start">
+          Korak po korak
         </Typography>
       </Box>
       <Typography sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -34,7 +35,10 @@ export const Header: FC = () => {
           </>
         )}
         {numOfUnrecordedActivities > 0 && (
-          <>{numOfUnrecordedActivities} nezabeležene aktivnosti.</>
+          <>
+            {numOfUnrecordedActivities} nezabeležene aktivnosti.{" "}
+            <IoClose color="red" />
+          </>
         )}
       </Typography>
     </Box>
